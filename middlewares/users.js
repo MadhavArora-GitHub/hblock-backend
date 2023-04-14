@@ -1,37 +1,34 @@
-export async function getPeer(req, res){
-    const peer = {
-        id: "123",
-        organization: "block hospital",
-    };
+import { txCount } from "../app.js";
+import jwt from "jsonwebtoken";
 
-
+export async function userDetails(req, res){
     return res.status(200).json({
-        message: "peer fetched successfully",
-        peer
+        ORG_NAME: process.env.ORG_NAME,
+        ORG_ID: process.env.ORG_ID,
+        CHANNEL_NAME: process.env.CHANNEL_NAME,
+        CHAINCODE_NAME: process.env.CHAINCODE_NAME
     });
 }
 
-export async function getChannels(req, res){
-    const subscribed = [{
-        id: "123",
-        name: "blood",
-    }, {
-        id: "234",
-        name: "drugs",
-    }, {
-        id: "345",
-        name: "surgical",
-    }];
-
-    const unsubscribed = [{
-        id: "456",
-        name: "" 
-    }];
-
-    
+export async function getNewId(req, res){
     return res.status(200).json({
-        message: "channels fetched successfully",
-        subscribed,
-        unsubscribed,
+        id: `${process.env.ORG_NAME}${txCount}`
     });
+}
+
+export async function checkApiKey(req, res){
+    const apiKey = req.body.apiKey;
+
+    try {    
+        const payload = jwt.verify(apiKey, process.env.JWT_SECRET);
+        let isValid = false;
+        if (payload.MSP_ID===process.env.MSP_ID && payload.ORG_NAME===process.env.ORG_NAME && payload.ORG_ID===process.env.ORG_ID){
+            isValid = true;
+        }
+
+        return res.status(200).json({ isValid });
+    }
+    catch (err){
+        return res.status(500).json({ err });
+    }
 }

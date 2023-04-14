@@ -4,10 +4,10 @@ import * as users from "../middlewares/users.js";
 
 const router = express.Router();
 
-router.get("/", authenticate, async (req, res)=>{
-    res.status(200).json({
-        message: "perfetto"
-    });
-});
+router.post("/check-api-key", users.checkApiKey);
+
+router.get("/", authenticate, users.userDetails);
+
+router.get("/new-request-id", authenticate, users.getNewId);
 
 export { router };

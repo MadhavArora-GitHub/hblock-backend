@@ -14,7 +14,7 @@ router.get("/requests/get-to", authenticate, transactions.getRequestsRequestedTo
 
 router.get("/requests/:id", authenticate, transactions.getRequest);
 
-router.get("/requests/get-all", authenticate, transactions.getAllTransactions);
+router.get("/requests", authenticate, transactions.getAllTransactions);
 
 router.post("/blood/request", authenticate, transactions.requestBlood);
 

@@ -1,3 +1,5 @@
+import { modifyTxCount } from "../app.js";
+
 export async function queryTransaction(req, res){
     try {
         const fcn = req.body.fcn;
@@ -83,6 +85,7 @@ export async function requestBlood(req, res){
         const responseBuffer = await req.contract.submitTransaction(fcn, ...(req.body.args || []));
         const responseString = Buffer.from(responseBuffer).toString();
         const responseJson = JSON.parse(responseString);
+        modifyTxCount(1);
 
         return res.status(200).json(responseJson);
     } catch (e){

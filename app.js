@@ -1,7 +1,6 @@
 import express from "express";
 import { promises as fs } from "fs";
 import bodyParser from "body-parser";
-import { router as peerRouter } from "./routes/peer.js";
 import { router as homeRouter } from "./routes/home.js";
 import { router as transactionRouter } from "./routes/transaction.js";
 import cors from "cors";
@@ -12,6 +11,11 @@ import { User } from "fabric-common";
 import { connect } from "@hyperledger/fabric-gateway";
 import { newConnectOptions, newGrpcConnection } from "./src/utils.js";
 import _ from "lodash";
+
+export let txCount = 1;
+export async function modifyTxCount(salt){
+    txCount += salt;
+}
 
 async function main(){
 
@@ -117,19 +121,11 @@ async function main(){
         next();
     });
 
+    // passport.use(jwtStrategy);
+    // app.use(passport.initialize());
+
     app.use("/", homeRouter);
     app.use("/transaction", transactionRouter);
-
-    app.post("/check-api-key", (req, res)=>{
-        const apiKey = req.body.apiKey;
-
-        let isValid = false;
-        if (apiKey === process.env.API_KEY){
-            isValid = true;
-        }
-
-        return res.status(200).json({ isValid });
-    });
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, ()=>{
