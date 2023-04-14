@@ -17,10 +17,8 @@ export async function invokeTransaction(req, res){
     try {
         const fcn = req.body.fcn
         const responseBuffer = await req.contract.submitTransaction(fcn, ...(req.body.args || []));
-        const responseString = Buffer.from(responseBuffer).toString();
-        const responseJson = JSON.parse(responseString);
 
-        return res.status(200).json(responseJson);
+        return res.status(200).json({ success: true });
     } catch (e){
         return res.status(400).json(e.details && e.details.length ? e.details : e.message);
     }
