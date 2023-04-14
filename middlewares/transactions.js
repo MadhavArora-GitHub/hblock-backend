@@ -83,11 +83,11 @@ export async function requestBlood(req, res){
     try {
         const fcn = `requestBlood`;
         const responseBuffer = await req.contract.submitTransaction(fcn, ...(req.body.args || []));
-        const responseString = Buffer.from(responseBuffer).toString();
-        const responseJson = JSON.parse(responseString);
+        // response buffer should be empty as in chaincode requestBlood does not returns anyting 
+
         modifyTxCount(1);
 
-        return res.status(200).json(responseJson);
+        return res.status(200).json({ success: true });
     } catch (e){
         return res.status(400).json(e.details && e.details.length ? e.details : e.message);
     }
@@ -95,12 +95,11 @@ export async function requestBlood(req, res){
 
 export async function grantBlood(req, res){
     try {
-        const fcn = `requestBlood`;
+        const fcn = `grantBlood`;
         const responseBuffer = await req.contract.submitTransaction(fcn, ...(req.body.args || []));
-        const responseString = Buffer.from(responseBuffer).toString();
-        const responseJson = JSON.parse(responseString);
+        // response buffer should be empty as in chaincode grantBlood does not returns anyting 
 
-        return res.status(200).json(responseJson);
+        return res.status(200).json({ success: true });
     } catch (e){
         return res.status(400).json(e.details && e.details.length ? e.details : e.message);
     }
@@ -110,10 +109,9 @@ export async function shutRequest(req, res){
     try {
         const fcn = `shutRequest`;
         const responseBuffer = await req.contract.submitTransaction(fcn, ...(req.body.args || []));
-        const responseString = Buffer.from(responseBuffer).toString();
-        const responseJson = JSON.parse(responseString);
+        // response buffer should be empty as in chaincode shutRequest does not returns anyting 
 
-        return res.status(200).json(responseJson);
+        return res.status(200).json({ success: true });
     } catch (e){
         return res.status(400).json(e.details && e.details.length ? e.details : e.message);
     }
@@ -123,10 +121,9 @@ export async function declineRequest(req, res){
     try {
         const fcn = `declineRequest`;
         const responseBuffer = await req.contract.submitTransaction(fcn, ...(req.body.args || []));
-        const responseString = Buffer.from(responseBuffer).toString();
-        const responseJson = JSON.parse(responseString);
+        // response buffer should be empty as in chaincode declineRequest does not returns anyting 
 
-        return res.status(200).json(responseJson);
+        return res.status(200).json({ success: true });
     } catch (e){
         return res.status(400).json(e.details && e.details.length ? e.details : e.message);
     }
